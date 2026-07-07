@@ -1,0 +1,152 @@
+@charset "UTF-8";
+
+/* --- Header --- */
+header {
+    padding: 5px 10px;
+}
+
+/* --- Main (auth pages only) --- */
+main {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    overflow: auto;
+}
+
+/* --- Body (auth pages only) --- */
+body {
+    overflow: auto;
+}
+
+/* --- Login Container --- */
+.auth-container {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    gap: 15px;
+
+    width: min(450px, 90%);
+    margin: 0 auto;
+    padding: 30px 20px;
+
+    background: rgba(255, 255, 255, 0.12);
+    backdrop-filter: blur(20px);
+    border: 1px solid rgba(255, 255, 255, .2);
+    border-radius: 20px;
+}
+
+/* --- Icon --- */
+.auth-icon {
+    font-size: 3rem;
+    color: #5B9CF6;
+}
+
+/* --- Title --- */
+.auth-container h1 {
+    font-size: 2rem;
+    font-weight: 700;
+}
+
+/* --- Error Message --- */
+.auth-container .error-message {
+    color: #ff8f8f;
+    text-align: center;
+}
+
+/* --- Form --- */
+.auth-container form {
+    display: flex;
+    flex-direction: column;
+    gap: 15px;
+    width: 100%;
+}
+
+/* --- Inputs --- */
+.auth-container input {
+    align-self: center;
+
+    width: 90%;
+    padding: 10px 12px;
+
+    font-size: 1rem;
+    color: #E8EFFE;
+
+    background: rgba(255, 255, 255, 0.08);
+    border: 1px solid rgba(255, 255, 255, 0.2);
+    border-radius: 10px;
+
+    outline: none;
+}
+
+.auth-container input::placeholder {
+    color: rgba(232, 239, 254, 0.7);
+}
+
+/* --- Login Button --- */
+.auth-container button[type="submit"] {
+    width: fit-content;
+    align-self: center;
+
+    padding: 12px 32px;
+
+    font-size: 1rem;
+    font-weight: 700;
+
+    color: #E8EFFE;
+    background: #5B9CF6;
+
+    border: none;
+    border-radius: 999px;
+
+    cursor: pointer;
+}
+
+/* --- Auth Link (login ↔ register) --- */
+.auth-link {
+    text-align: center;
+    font-size: 0.95rem;
+}
+
+.auth-link a {
+    color: #5B9CF6;
+    text-decoration: none;
+    font-weight: 700;
+}
+
+/* --- Guest Note --- */
+.guest-note {
+    text-align: center;
+    line-height: 1.6;
+    font-size: 0.9rem;
+    color: rgba(232, 239, 254, 0.8);
+}
+
+/* --- Header Logo --- */
+#logo {
+    font-size: 2rem;
+}
+
+#logo a {
+    color: #E8EFFE;
+    text-decoration: none;
+}
+
+/* ========================= */
+/* --- Responsive Design --- */
+/* ========================= */
+@media (max-width: 768px) {
+
+    .auth-container {
+        width: 95%;
+        padding: 30px 20px;
+    }
+
+    .auth-icon {
+        font-size: 3rem;
+    }
+
+    .auth-container h1 {
+        font-size: 1.8rem;
+    }
+}
