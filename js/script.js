@@ -93,7 +93,7 @@ function startTimer() {
 
     timerId = setInterval(function () {
         timeLeft--;
-        updateDisplay();
+        renderTime();
 
         if (timeLeft <= 0) {
             clearInterval(timerId);
@@ -106,7 +106,7 @@ function startTimer() {
                 }
 
                 pomodoroCount++;
-                updateSessionDots();
+                renderSessionDots();
 
                 if (pomodoroCount % 4 === 0) {
                     setLongBreak(); // 4セッション毎に長休憩
@@ -118,7 +118,7 @@ function startTimer() {
             } else {
                 if (modeElement.classList.contains('mode-long-break')) {
                     pomodoroCount = 0;
-                    updateSessionDots();
+                    renderSessionDots();
                 }
                 setFocus();
                 startTimer();
@@ -135,44 +135,59 @@ function formatTime() {
 }
 
 /* - Timer | 表示 - */
-function updateDisplay() {
+function renderTime() {
     const time = formatTime();
     document.getElementById('minutes').textContent = String(time.min).padStart(2, '0');
     document.getElementById('seconds').textContent = String(time.sec).padStart(2, '0');
 }
 
+/* - Timer | 設定変更の反映 - */
+// タイマー停止中に設定を変更した場合、表示中のモードに応じてtimeLeftを再計算し、renderTimeで反映
+function syncTimeLeft() {
+    if (timerId !== null) return; // タイマーが動いている間は、表示中の残り時間を変更しない
+
+    if (modeElement.classList.contains('mode-focus')) {
+        timeLeft = TEST_MODE ? 5 : focusTime * 60;
+    } else if (modeElement.classList.contains('mode-short-break')) {
+        timeLeft = TEST_MODE ? 5 : shortBreakTime * 60;
+    } else if (modeElement.classList.contains('mode-long-break')) {
+        timeLeft = TEST_MODE ? 5 : longBreakTime * 60;
+    }
+    renderTime();
+}
+
 /* - Timer | モード - */
 function setFocus() {
     timeLeft = TEST_MODE ? 5 : focusTime * 60;
-    updateDisplay();
+    renderTime();
     modeElement.classList.remove('mode-short-break', 'mode-long-break');
     modeElement.classList.add('mode-focus');
     timerContainer.classList.remove('short-break-mode', 'long-break-mode');
     timerContainer.classList.add('focus-mode');
-    showNotification('?? Focus Time Started!');
+    showNotification('🔔 Focus Time Started!');
     playFocusChime();
 }
 
 function setShortBreak() {
     timeLeft = TEST_MODE ? 5 : shortBreakTime * 60;
-    updateDisplay();
+    renderTime();
     modeElement.classList.remove('mode-focus', 'mode-long-break');
     modeElement.classList.add('mode-short-break');
     timerContainer.classList.remove('focus-mode', 'long-break-mode');
     timerContainer.classList.add('short-break-mode');
-    showNotification('? Short Break Started!');
+    showNotification('☕ Short Break Started!');
     playBreakChime();
     stopBgm();
 }
 
 function setLongBreak() {
     timeLeft = TEST_MODE ? 5 : longBreakTime * 60;
-    updateDisplay();
+    renderTime();
     modeElement.classList.remove('mode-focus', 'mode-short-break');
     modeElement.classList.add('mode-long-break');
     timerContainer.classList.remove('focus-mode', 'short-break-mode');
     timerContainer.classList.add('long-break-mode');
-    showNotification('?? Long Break Started!');
+    showNotification('🌙 Long Break Started!');
     playBreakChime();
     stopBgm();
 }
@@ -181,7 +196,7 @@ function setLongBreak() {
 /* ------------------- */
 /* - Session Counter - */
 /* ------------------- */
-function updateSessionDots() {
+function renderSessionDots() {
     sessionDots.forEach(dot => dot.classList.remove('active'));
     const activeCount = Math.min(pomodoroCount, 4);
     for (let i = 0; i < activeCount; i++) {
@@ -228,6 +243,7 @@ function closeModal() {
     overlay.classList.remove('show');
     settingsModal.classList.remove('show');
     historyModal.classList.remove('show');
+    logoutModal.classList.remove('show');
 }
 
 
@@ -312,9 +328,9 @@ resetBtn.addEventListener('click', function () {
     timerId = null;
     stopBgm(); // リセット時はBGMを止める
     pomodoroCount = 0;
-    updateSessionDots();
+    renderSessionDots();
     setFocus();
-    updateDisplay();
+    renderTime();
 });
 
 
@@ -421,7 +437,7 @@ overlay.addEventListener('click', closeModal);
 
 saveSettingsBtn.addEventListener('click', function () {
     // 値(ユーザー入力した時間)を取得し、タイマーで使う変数の値を更新
-    //このコードがないと保存してもすぐには反映されない
+    // このコードがないと保存してもすぐには反映されない
     focusTime = Number(document.querySelector('#focus-time').value);
     shortBreakTime = Number(document.querySelector('#short-break-time').value);
     longBreakTime = Number(document.querySelector('#long-break-time').value);
@@ -430,6 +446,9 @@ saveSettingsBtn.addEventListener('click', function () {
     localStorage.setItem('focusTime', focusTime);
     localStorage.setItem('shortBreakTime', shortBreakTime);
     localStorage.setItem('longBreakTime', longBreakTime);
+
+    // タイマー停止中であれば、timeLeftを再計算してrenderTimeで表示に反映
+    syncTimeLeft();
 
     alert('Saved');
     closeModal();
@@ -450,6 +469,10 @@ resetSettingsBtn.addEventListener('click', function () {
     document.querySelector('#focus-time').value = focusTime;
     document.querySelector('#short-break-time').value = shortBreakTime;
     document.querySelector('#long-break-time').value = longBreakTime;
+
+    // タイマー停止中であれば、timeLeftを再計算してrenderTimeで表示に反映
+    syncTimeLeft();
+
     alert('Settings reset.');
 });
 
@@ -494,10 +517,7 @@ if (historyLink) {
     });
 }
 
-closeHistoryBtn.addEventListener('click', function () {
-    overlay.classList.remove('show');
-    historyModal.classList.remove('show');
-});
+closeHistoryBtn.addEventListener('click', closeModal);
 
 historyLoginBtn.addEventListener('click', function () {
     location.href = 'login.php';
@@ -513,10 +533,7 @@ if (logoutLink) {
     });
 }
 
-closeLogoutBtn.addEventListener('click', function () {
-    overlay.classList.remove('show');
-    logoutModal.classList.remove('show');
-});
+closeLogoutBtn.addEventListener('click', closeModal);
 
 logoutBtn.addEventListener('click', function () {
     location.href = 'logout.php';
