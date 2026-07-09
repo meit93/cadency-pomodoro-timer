@@ -11,6 +11,9 @@ main {
     justify-content: center;
     align-items: center;
     overflow: auto;
+
+    padding: 20px 0;
+    /* コンテンツが画面高さを超えた場合でも、上下が見切れないための余白 */
 }
 
 /* --- Body (auth pages only) --- */
@@ -24,11 +27,11 @@ body {
     flex-direction: column;
     justify-content: center;
     align-items: center;
-    gap: 15px;
+    gap: clamp(8px, 1.5vh, 15px);
 
     width: min(450px, 90%);
     margin: 0 auto;
-    padding: 30px 20px;
+    padding: clamp(15px, 3vh, 30px) 20px;
 
     background: rgba(255, 255, 255, 0.12);
     backdrop-filter: blur(20px);
@@ -38,13 +41,13 @@ body {
 
 /* --- Icon --- */
 .auth-icon {
-    font-size: 3rem;
+    font-size: clamp(2rem, 5vh, 3rem);
     color: #5B9CF6;
 }
 
 /* --- Title --- */
 .auth-container h1 {
-    font-size: 2rem;
+    font-size: clamp(1.4rem, 4vh, 2rem);
     font-weight: 700;
 }
 
@@ -52,13 +55,14 @@ body {
 .auth-container .error-message {
     color: #ff8f8f;
     text-align: center;
+    font-size: clamp(0.85rem, 1.8vh, 1rem);
 }
 
 /* --- Form --- */
 .auth-container form {
     display: flex;
     flex-direction: column;
-    gap: 15px;
+    gap: clamp(8px, 1.5vh, 15px);
     width: 100%;
 }
 
@@ -67,7 +71,7 @@ body {
     align-self: center;
 
     width: 90%;
-    padding: 10px 12px;
+    padding: clamp(8px, 1.2vh, 10px) 12px;
 
     font-size: 1rem;
     color: #E8EFFE;
@@ -88,7 +92,7 @@ body {
     width: fit-content;
     align-self: center;
 
-    padding: 12px 32px;
+    padding: clamp(8px, 1.5vh, 12px) 32px;
 
     font-size: 1rem;
     font-weight: 700;
@@ -117,8 +121,8 @@ body {
 /* --- Guest Note --- */
 .guest-note {
     text-align: center;
-    line-height: 1.6;
-    font-size: 0.9rem;
+    line-height: 1.5;
+    font-size: clamp(0.8rem, 1.6vh, 0.9rem);
     color: rgba(232, 239, 254, 0.8);
 }
 
@@ -139,14 +143,14 @@ body {
 
     .auth-container {
         width: 95%;
-        padding: 30px 20px;
+        padding: clamp(15px, 3vh, 30px) 20px;
     }
 
     .auth-icon {
-        font-size: 3rem;
+        font-size: clamp(2rem, 5vh, 3rem);
     }
 
     .auth-container h1 {
-        font-size: 1.8rem;
+        font-size: clamp(1.3rem, 4vh, 1.8rem);
     }
 }
