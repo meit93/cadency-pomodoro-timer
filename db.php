@@ -1,12 +1,12 @@
 <?php
 
 /* - Database Settings - */
-// Railway��ł͊��ϐ�����ڑ������擾�E���[�J��(XAMPP)�ł͊��ϐ����Ȃ����� ?: �̉E���̒l���g�p
-define('DB_HOST', getenv('MYSQLHOST')     ?: 'localhost'); // �f�[�^�x�[�X�̏ꏊ
-define('DB_PORT', getenv('MYSQLPORT')     ?: '3306');      // �ڑ�����|�[�g�ԍ�
-define('DB_NAME', getenv('MYSQLDATABASE') ?: 'cadency');   // �f�[�^�x�[�X��
-define('DB_USER', getenv('MYSQLUSER')     ?: 'root');      // ���O�C�����[�U�[��
-define('DB_PASS', getenv('MYSQLPASSWORD') ?: '');          // ���O�C���p�X���[�h
+// Railway上では環境変数から接続情報を取得・ローカル(XAMPP)では環境変数がないため ?: の右側の値を使用
+define('DB_HOST', getenv('MYSQLHOST')     ?: 'localhost'); // データベースの場所
+define('DB_PORT', getenv('MYSQLPORT')     ?: '3306');      // 接続するポート番号
+define('DB_NAME', getenv('MYSQLDATABASE') ?: 'cadency');   // データベース名
+define('DB_USER', getenv('MYSQLUSER')     ?: 'root');      // ログインユーザー名
+define('DB_PASS', getenv('MYSQLPASSWORD') ?: '');          // ログインパスワード
 
 
 /* - Database Connection - */
@@ -16,13 +16,12 @@ try {
         DB_USER,
         DB_PASS,
         [
-            PDO::ATTR_ERRMODE            => PDO::ERRMODE_EXCEPTION,  // �G���[���ɗ�O�𓊂���
-            PDO::ATTR_DEFAULT_FETCH_MODE => PDO::FETCH_ASSOC,        // ���ʂ�A�z�z��Ŏ擾
-            PDO::ATTR_EMULATE_PREPARES   => false,                   // SQL���̈��S�`�F�b�N��MySQL�{�̂ɂ���Ă��炤(�����S)
+            PDO::ATTR_ERRMODE            => PDO::ERRMODE_EXCEPTION,  // エラー時に例外を投げる
+            PDO::ATTR_DEFAULT_FETCH_MODE => PDO::FETCH_ASSOC,        // 結果を連想配列で取得
+            PDO::ATTR_EMULATE_PREPARES   => false,                   // SQL文の安全チェックをMySQL本体にやってもらう(より安全)
         ]
     );
 } catch (PDOException $e) {
-http_response_code(500);
-    error_log('DB connection failed: ' . $e->getMessage()); // 【デバッグ用】原因確認後に削除
+    http_response_code(500);
     exit('DB connection failed.');
 }
