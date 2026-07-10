@@ -51,6 +51,8 @@ unset($_SESSION['login_error']); // 取り出したら削除
     <link
         href="https://fonts.googleapis.com/css2?family=Imperial+Script&family=Nunito:ital,wght@0,200..1000;1,200..1000&display=swap"
         rel="stylesheet">
+
+    <?php include 'ga.php'; ?>
 </head>
 
 <body>
