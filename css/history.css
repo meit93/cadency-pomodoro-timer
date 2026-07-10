@@ -199,7 +199,6 @@ h1 {
         width: min(800px, 90%);
     }
 
-    #export-csv,
     #clear-history {
         justify-content: center;
         text-align: center;
