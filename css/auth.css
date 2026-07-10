@@ -1,10 +1,5 @@
 @charset "UTF-8";
 
-/* --- Header --- */
-header {
-    padding: 5px 10px;
-}
-
 /* --- Main (auth pages only) --- */
 main {
     display: flex;
@@ -13,12 +8,6 @@ main {
     overflow: auto;
 
     padding: 20px 0;
-    /* コンテンツが画面高さを超えた場合でも、上下が見切れないための余白 */
-}
-
-/* --- Body (auth pages only) --- */
-body {
-    overflow: auto;
 }
 
 /* --- Login Container --- */
@@ -27,11 +16,12 @@ body {
     flex-direction: column;
     justify-content: center;
     align-items: center;
-    gap: clamp(8px, 1.5vh, 15px);
+    gap: clamp(10px, 3vh, 30px);
 
-    width: min(450px, 90%);
+    width: clamp(380px, 30vw, 650px);
+    min-height: clamp(300px, 60vh, 650px);
     margin: 0 auto;
-    padding: clamp(15px, 3vh, 30px) 20px;
+    padding: clamp(15px, 3vh, 30px) clamp(20px, 5vw, 50px);
 
     background: rgba(255, 255, 255, 0.12);
     backdrop-filter: blur(20px);
@@ -41,13 +31,13 @@ body {
 
 /* --- Icon --- */
 .auth-icon {
-    font-size: clamp(2rem, 5vh, 3rem);
+    font-size: clamp(2rem, 5vh, 3.5rem);
     color: #5B9CF6;
 }
 
 /* --- Title --- */
 .auth-container h1 {
-    font-size: clamp(1.4rem, 4vh, 2rem);
+    font-size: clamp(1.5rem, 4vh, 2.5rem);
     font-weight: 700;
 }
 
@@ -55,7 +45,7 @@ body {
 .auth-container .error-message {
     color: #ff8f8f;
     text-align: center;
-    font-size: clamp(0.85rem, 1.8vh, 1rem);
+    font-size: clamp(0.8rem, 2vh, 1rem);
 }
 
 /* --- Form --- */
@@ -122,7 +112,7 @@ body {
 .guest-note {
     text-align: center;
     line-height: 1.5;
-    font-size: clamp(0.8rem, 1.6vh, 0.9rem);
+    font-size: clamp(0.8rem, 1.5vh, 1rem);
     color: rgba(232, 239, 254, 0.8);
 }
 
@@ -151,6 +141,6 @@ body {
     }
 
     .auth-container h1 {
-        font-size: clamp(1.3rem, 4vh, 1.8rem);
+        font-size: clamp(1.5rem, 5vh, 2rem);
     }
 }
